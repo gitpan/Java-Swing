@@ -1,0 +1,10 @@
+{
+    package => 'java.awt.event',
+    name    => 'MouseMotionListener',
+    type    => 'MouseEvent',
+    sub     => '_mouse_motion_listener',
+    events  => [ qw(
+        mouseMoved
+        mouseDragged
+    ) ],
+}

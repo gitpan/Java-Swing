@@ -1,0 +1,34 @@
+Swing version 0.01
+==================
+
+Java::Swing is a Perl module providing Java Swing bindings.  To use
+it you need to have Inline and Inline::Java installed, but you code solely
+in Perl.  This is similar to kits like Perl/Tk and Gtk2::.
+
+SEE ALSO
+
+For further information on using Java::Swing, see GUIDE in the distribution.
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  Inline
+  Inline::Java
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2004 Philip Crow
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl 5.8.0 itself. 
+

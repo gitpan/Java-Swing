@@ -1,0 +1,16 @@
+Revision history for Perl extension Java::Swing.
+
+0.02
+        - Completed initial documentation
+        - Added a large number of modules to the MANIFEST
+        - Added those modules to the packages list used by Swing.pm
+        - Changed the location of the packages list in the hope that
+          the location will make it easier to maintain for me and others
+        - Brought in awt Layout managers.  This required special attention
+          for GridBagLayout and its constraints class.  See t/05gridbag.t
+          for an example of how to use the GridBagLayout.
+
+0.01  Tue Nov 23 01:48:43 2004
+	- original version; created by h2xs 1.22 with options
+		-AXn Java::Swing
+

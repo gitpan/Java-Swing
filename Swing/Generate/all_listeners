@@ -1,0 +1,97 @@
+#!/usr/bin/perl
+use strict; use warnings;
+
+use Parse::RecDescent;
+#$::RD_TRACE = 1;
+
+use Java::Swing::Generate::Listener;
+
+our $grammar = q(
+    interface : comp_stmt interface_decl comment '{' method_list '}'
+                { { listener  => $item{comp_stmt},
+                    methods   => $item{method_list},
+                    full_name => $item{interface_decl} } }
+              | <error>
+
+    comp_stmt : 'Compiled from' name '.java' { $item{name} }
+
+    name : /^([\w\d]+)/ { $1 }
+
+    qualified_name : name '.' qualified_name
+                     { "$item{name}.$item{qualified_name}" }
+                   | name '.' name { "$item[1].$item[3]" }
+                   | name
+
+    interface_decl : 'public' 'interface' qualified_name
+                     'extends' qualified_name implements_clause(?)
+                     { $item[3] }
+
+    implements_clause : 'implements' qualified_name
+
+    comment : '/*' /[^*]*/ '*/'
+            |
+
+    method_list : method(s)
+
+    method : 'public' /(abstract)?/ 'void' name '(' qualified_name ')'
+             throws_clause(?) ';'
+             { { name   => $item{name},
+                 type   => $item{qualified_name},
+                 throws => $item{'throws_clause(?)'}->[0] } }
+
+    throws_clause : 'throws' qualified_name { $item{qualified_name} }
+);
+
+our $parser = Parse::RecDescent->new($grammar);
+
+my $with_usage   = "usage: $0 decompiled_file java_src_dir perl_module_dir\n";
+my $decomp_file  = shift or die $with_usage;
+# to generate the decompiled file, see decomp_listeners
+my $java_src_dir = shift or die $with_usage;
+my $perl_mod_dir = shift or die $with_usage;
+
+$/ = "";  # paragraph mode
+
+open DECOMP, "$decomp_file" or die "Couldn't read $decomp_file\n";
+
+while (<DECOMP>) {
+    make_perl_helper($_);
+}
+
+close DECOMP;
+
+sub make_perl_helper {
+    my $paragraph = shift;
+
+    my $parsed_value = $parser->interface($paragraph);
+    return unless defined $parsed_value;
+
+    my $package = $parsed_value->{full_name};
+    $package    =~ s/\.$parsed_value->{listener}//;
+
+    my $answer = {
+        name      => $parsed_value->{listener},
+        'package' => $package,
+        'sub'     => "_$parsed_value->{listener}",
+        events    => $parsed_value->{methods},
+    };
+
+#    use Data::Dumper; print Dumper($parsed_value);
+
+    my $java_code = generate_listener($answer);
+    my $perl_code = generate_module($answer);
+
+    unless (open JAVA, ">$java_src_dir/Perl$answer->{name}.java") {
+        warn "couldn't write $java_src_dir/Perl$answer->{name}.java skipping\n";
+        return;
+    }
+    print JAVA $java_code;
+    close JAVA;
+
+    unless (open PERL, ">$perl_mod_dir/$answer->{name}.pm") {
+        warn "couldn't write $perl_mod_dir/$answer->{name}.pm skipping\n";
+        return;
+    }
+    print PERL $perl_code;
+    close PERL;
+}

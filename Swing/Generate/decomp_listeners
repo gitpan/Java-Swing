@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+use strict; use warnings;
+
+use File::Find;
+
+my $with_usage   = "usage: $0 package source_directory\n";
+my $package      = shift or die $with_usage;
+my $source_dir   = shift or die $with_usage;
+
+find({ wanted => \&process, no_chdir => 1 }, $source_dir);
+
+sub process {
+    return unless /\.java$/;
+    my $name = $File::Find::name;
+    $name    =~ s/^$source_dir//;
+    $name    =~ m!^
+                   ((.*)/)?
+                   ([^.]+)
+                 !x;
+    my $sub_pack = defined($2) ? "$2/" : "";
+    my $class    = $3;
+    my $sub_dir  = $sub_pack;
+    $sub_pack    =~ s!/!.!g;
+    $sub_pack    = ".$sub_pack" if $sub_pack;
+
+    return unless ( $class =~ /Listener/ );
+    return if (
+        $class =~ /Abstract/
+        or
+        $sub_pack =~ /plaf/
+    );
+
+    my $decompile =
+    `javap -classpath /usr/java/j2sdk1.4.1_02/jre/lib/rt.jar $package$sub_pack$class`;
+
+    print "$decompile\n";
+}

@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+use strict; use warnings;
+
+# This program provides an example of a simple Java::Swing application.
+# Type an expression in the top text box, press evaluate, and see the
+# answer in the other box.
+
+# Note that to make the example work, you must have the directory containing
+# the Java::Swing classes in the classpath.  In the distribution this is
+# called java.
+
+BEGIN { $ENV{CLASSPATH} .= ';java' }
+
+use Java::Swing;
+
+my $expression  = JTextField->new();
+my $answer      = JTextField->new( { columns => 10 } );
+my $submit      = JButton   ->new("Evaluate");
+my $frame       = JFrame    ->new();
+my $root_pane   = $frame    ->getContentPane();
+my $south_panel = JPanel    ->new();
+
+$south_panel->add(JLabel->new("Answer:"), "West"  );
+$south_panel->add($answer,                "Center");
+$south_panel->add($submit,                "East"  );
+
+$root_pane->add($expression,  "North");
+$root_pane->add($south_panel, "South");
+
+$frame->setSize(300, 100);
+$frame->show();
+
+my $swinger = Java::Swing->new();
+$swinger->connect(
+    "ActionListener", $submit, { actionPerformed => \&evaluate }
+);
+
+$swinger->connect(
+    "WindowListener", $frame, { windowClosing => \&ending }
+);
+
+$swinger->start();
+
+sub evaluate {
+    my $sender_name = shift;
+    my $event       = shift;
+
+    $answer->setText(eval $expression->getText());
+}
+
+sub ending {
+    $swinger->stop();
+}

@@ -1,0 +1,19 @@
+Remaining problems with listener generation:
+1   extends clauses for listener interfaces currently only allow one parent
+2   while the same is true for throws clauses on event methods, none are
+    currently failing as a result
+Generate Perl modules for selected awt classes, notably the layout managers
+    In particular, make a procedural interface for GridBagConstraints.
+
+Document
+    Including name conflicts unresolved and other classes unimplemented
+
+Done
+Make constructors take named arguments.
+Make a small, but useful example (like the expression calculator).
+Add lots more classes (possibly through generation).
+Correct problems with these awt listeners:
+    AWTEventListener
+    DragSourceListener
+    DropTargetListener
+Generate the swing listeners

@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+use strict; use warnings;
+
+use Java::Swing::Generate::Widget;
+use File::Find;
+
+my $with_usage   = "usage: $0 package source_directory pm_dir\n";
+my $package      = shift or die $with_usage;
+my $source_dir   = shift or die $with_usage;
+my $pm_dir       = shift or die $with_usage;
+
+find({ wanted => \&process, no_chdir => 1 }, $source_dir);
+
+sub process {
+    return unless /\.java$/;
+    my $name = $File::Find::name;
+    $name    =~ s/^$source_dir//;
+    $name    =~ m!^
+                   ((.*)/)?
+                   ([^.]+)
+                 !x;
+    my $sub_pack = defined($2) ? "$2/" : "";
+    my $class    = $3;
+    my $sub_dir  = $sub_pack;
+    $sub_pack    =~ s!/!.!g;
+
+    return if(
+        $class =~ /Abstract|Listener|Applet|Policy|Model|Constants/
+        or
+        $class =~ /Event$|Exception$|Adapter$/
+        or
+        $sub_pack =~ /plaf|event/
+    );
+
+    mkdir "$pm_dir/$sub_dir" unless (-d "$pm_dir/$sub_dir");
+
+    my $module = generate($package, $class, $sub_pack);
+
+    unless (open MODULE, ">$pm_dir/$sub_dir/$class.pm") {
+        warn "Couldn't write $pm_dir/$sub_dir/$class.pm, skipping it...\n";
+        return;
+    }
+
+    print MODULE $module;
+
+    close MODULE;
+}

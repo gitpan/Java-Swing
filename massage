@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+use strict; use warnings;
+
+# This script converts find Swing '*.pm' into a form suitable for direct
+# inclusion in Swing/PerlPackages.pm or Swing/PerlLocalPackages.pm
+
+while (<>) {
+    s!^Swing/!!;
+    s!\.pm$!!;
+    s!/!::!g;
+    print "    $_";
+}
