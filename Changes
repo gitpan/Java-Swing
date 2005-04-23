@@ -1,6 +1,14 @@
 Revision history for Perl extension Java::Swing.
 
-0.02
+0.03  Fri Apr 22 18:46 2005
+        - Cleaned documentation
+        - Corrected Timer class.  To use it do this:
+            my $timer = Timer->new($delay, { actionPerformed => \&handler });
+            $timer->start();
+          do these things before calling start on your Java::Swing object
+          (which I call swinger in the docs).
+
+0.02  Wed Jan 14 03:24 2005
         - Completed initial documentation
         - Added a large number of modules to the MANIFEST
         - Added those modules to the packages list used by Swing.pm

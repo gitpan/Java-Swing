@@ -3,18 +3,11 @@ use strict; use warnings;
 
 use Inline Java => 'DATA';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 my %callbacks;
 
 BEGIN {
-    # Note that package names are not prefaced by Java::Swing.  This
-    # it for user convenience.  Do store them in Java/Swing/Name.pm,
-    # but list the package as Name.  All names should be Swing class names.
-    # In the rare event of name conflicts, resolve them for your users
-    # here.  For example, suppose there were two classes named
-    # javax.swing.Phil and java.awt.Phil, in the list below call one
-    # swing::Phil and the other awt::Phil.  Then store them in
-    # Java/Swing/swing/Phil.pm and Java/Swing/awt/Phil.pm.
+    # To add packages to the Java::Swing scheme, see PerlLocalPackages.pm.
 
     use Java::Swing::PerlPackages;
     use Java::Swing::PerlLocalPackages;
@@ -102,12 +95,20 @@ Java::Swing - Perl extension providing direct access to the Java Swing API
     'ActionListener', $button, { actionPerformed => \&myListener }
   );
 
+  my $timer = Timer->new(10, { actionPerformed => \&timer_catcher });
+  $timer->start();
+
   $swinger->start();
 
   sub mylistener {
     my $generating_object = shift;
     my $event             = shift;
     print "Hello, Rob!\n";
+  }
+
+  my $count = 1;
+  sub timer_catcher {
+    print "Timer went off " . $count++;
   }
 
 =head1 ABSTRACT

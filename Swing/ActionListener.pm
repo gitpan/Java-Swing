@@ -8,8 +8,36 @@ use Inline Java      => 'STUDY',
 my %callbacks;
 my %listeners;
 
-sub connect {
+# Normally, you should connect in favor of this method.
+# Use get_listener only if you need to pass a listener to a constructor.  That
+# situation defeats the normal action of connect.  It expects to receive
+# the sending object.  For classes like javax.swing.Timer, you need a
+# listener to pass to the constructor, before it gives you a reference.
+# Therefore, for classes like Timer, first call get_listener.  Pass the
+# returned listener to the Timer constructor.  Then, you MUST call
+# add_callbacks on this class.
+sub get_listener {
     my $invocant       = shift;  # not used
+    return Java::Swing::ActionListener::PerlActionListener->new();
+}
+
+sub add_callbacks {
+    my $invocant       = shift;  # ignored class name
+    my $listener       = shift;
+    my $sender         = shift;
+    my $callbacks      = shift;
+    my $object_name    = ref $sender;
+    my $callbacks_name = ref $callbacks;
+
+    $callbacks{$object_name}{$callbacks_name} = $callbacks;
+    $listeners{$object_name}{$callbacks_name} = $listener;
+
+    $listener->setSender($object_name);
+    $listener->setCallbacks($callbacks_name);
+}
+
+sub connect {
+    my $invocant       = shift;
     my $sender         = shift;
     my $callbacks      = shift;
     my $object_name    = ref $sender;
@@ -23,7 +51,7 @@ sub connect {
     $callbacks{$object_name}{$callbacks_name} = $callbacks;
     $listeners{$object_name}{$callbacks_name} = $listener;
 
-    no strict;
+#    no strict;
     $sender->addActionListener($listener);
 }
 
