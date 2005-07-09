@@ -8,6 +8,8 @@ public class      PerlKeyListener
     String sender;
     String callbacks;
 
+    public PerlKeyListener() throws InlineJavaException { }
+
     public PerlKeyListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlKeyListener
         this.callbacks = callbacks;
     }
 
-    public void keyTyped(java.awt.event.KeyEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void keyTyped(java.awt.event.KeyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::KeyListener",
-                "_KeyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "keyTyped", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlKeyListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void keyPressed(java.awt.event.KeyEvent event) {
+    public void keyPressed(java.awt.event.KeyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::KeyListener",
-                "_KeyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "keyPressed", event}
             );
         }
@@ -45,11 +50,11 @@ public class      PerlKeyListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void keyReleased(java.awt.event.KeyEvent event) {
+    public void keyReleased(java.awt.event.KeyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::KeyListener",
-                "_KeyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "keyReleased", event}
             );
         }

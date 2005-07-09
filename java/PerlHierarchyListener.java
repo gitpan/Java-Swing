@@ -8,6 +8,8 @@ public class      PerlHierarchyListener
     String sender;
     String callbacks;
 
+    public PerlHierarchyListener() throws InlineJavaException { }
+
     public PerlHierarchyListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlHierarchyListener
         this.callbacks = callbacks;
     }
 
-    public void hierarchyChanged(java.awt.event.HierarchyEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void hierarchyChanged(java.awt.event.HierarchyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::HierarchyListener",
-                "_HierarchyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "hierarchyChanged", event}
             );
         }

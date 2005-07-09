@@ -8,6 +8,8 @@ public class      PerlAWTEventListener
     String sender;
     String callbacks;
 
+    public PerlAWTEventListener() throws InlineJavaException { }
+
     public PerlAWTEventListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlAWTEventListener
         this.callbacks = callbacks;
     }
 
-    public void eventDispatched(java.awt.AWTEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void eventDispatched(java.awt.AWTEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::AWTEventListener",
-                "_AWTEventListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "eventDispatched", event}
             );
         }

@@ -1,5 +1,16 @@
 Revision history for Perl extension Java::Swing.
 
+0.10  Sat Jul  9 11:04:10 CDT 2005
+        - Removed unneeded variable from Swing.pm for clarity.
+        - Removed all but three physical Perl proxy modules.  Moved to
+          proxies generated on the fly within Swing.pm.  This reduced the
+          number of files in the distribution dramatically (total modules
+          went from 313 to 19).
+        - As part of the module reduction, standardized the listener java
+          classes so they all have the same methods and always call the
+          same _Listener method in Java::Swing for event dispatch to Perl
+          callbacks.
+
 0.03  Fri Apr 22 18:46 2005
         - Cleaned documentation
         - Corrected Timer class.  To use it do this:

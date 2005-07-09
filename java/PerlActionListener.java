@@ -20,11 +20,11 @@ public class      PerlActionListener
     public void setSender   (String sender)    { this.sender    = sender; }
     public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
 
-    public void actionPerformed(java.awt.event.ActionEvent event) {
+    public void actionPerformed(java.awt.event.ActionEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ActionListener",
-                "_ActionListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "actionPerformed", event}
             );
         }

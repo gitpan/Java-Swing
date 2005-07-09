@@ -21,7 +21,7 @@ sub process {
     my $class    = $3;
     my $sub_dir  = $sub_pack;
     $sub_pack    =~ s!/!.!g;
-    $sub_pack    = ".$sub_pack" if $sub_pack;
+    $sub_pack    = ".$sub_pack"; # if $sub_pack;
 
     return unless ( $class =~ /Listener/ );
     return if (

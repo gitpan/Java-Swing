@@ -8,6 +8,8 @@ public class      PerlMouseWheelListener
     String sender;
     String callbacks;
 
+    public PerlMouseWheelListener() throws InlineJavaException { }
+
     public PerlMouseWheelListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlMouseWheelListener
         this.callbacks = callbacks;
     }
 
-    public void mouseWheelMoved(java.awt.event.MouseWheelEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void mouseWheelMoved(java.awt.event.MouseWheelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseWheelListener",
-                "_MouseWheelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseWheelMoved", event}
             );
         }

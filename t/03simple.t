@@ -7,11 +7,15 @@ use Java::Swing;
 
 my $frame = JFrame->new();
 
-isa_ok($frame, 'JFrame::javax::swing::JFrame', 'JFrame proper blessing');
+isa_ok($frame, 'Java::Swing::javax::swing::JFrame', 'JFrame proper blessing');
 
 my $button = JButton->new("Click Here");
 
-isa_ok($button, 'JButton::javax::swing::JButton', 'JButton proper blessing');
+isa_ok(
+    $button,
+    'Java::Swing::javax::swing::JButton',
+    'JButton proper blessing'
+);
 
 my $rootPane = $frame->getContentPane();
 

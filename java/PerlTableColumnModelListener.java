@@ -8,6 +8,8 @@ public class      PerlTableColumnModelListener
     String sender;
     String callbacks;
 
+    public PerlTableColumnModelListener() throws InlineJavaException { }
+
     public PerlTableColumnModelListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlTableColumnModelListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void columnAdded(javax.swing.event.TableColumnModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TableColumnModelListener",
-                "_TableColumnModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "columnAdded", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlTableColumnModelListener
     public void columnRemoved(javax.swing.event.TableColumnModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TableColumnModelListener",
-                "_TableColumnModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "columnRemoved", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlTableColumnModelListener
     public void columnMoved(javax.swing.event.TableColumnModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TableColumnModelListener",
-                "_TableColumnModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "columnMoved", event}
             );
         }
@@ -63,8 +68,8 @@ public class      PerlTableColumnModelListener
     public void columnMarginChanged(javax.swing.event.ChangeEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TableColumnModelListener",
-                "_TableColumnModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "columnMarginChanged", event}
             );
         }
@@ -78,8 +83,8 @@ public class      PerlTableColumnModelListener
     public void columnSelectionChanged(javax.swing.event.ListSelectionEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TableColumnModelListener",
-                "_TableColumnModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "columnSelectionChanged", event}
             );
         }

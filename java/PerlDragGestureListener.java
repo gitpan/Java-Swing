@@ -8,6 +8,8 @@ public class      PerlDragGestureListener
     String sender;
     String callbacks;
 
+    public PerlDragGestureListener() throws InlineJavaException { }
+
     public PerlDragGestureListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlDragGestureListener
         this.callbacks = callbacks;
     }
 
-    public void dragGestureRecognized(java.awt.dnd.DragGestureEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void dragGestureRecognized(java.awt.dnd.DragGestureEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DragGestureListener",
-                "_DragGestureListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "dragGestureRecognized", event}
             );
         }

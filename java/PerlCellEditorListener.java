@@ -8,6 +8,8 @@ public class      PerlCellEditorListener
     String sender;
     String callbacks;
 
+    public PerlCellEditorListener() throws InlineJavaException { }
+
     public PerlCellEditorListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlCellEditorListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void editingStopped(javax.swing.event.ChangeEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::CellEditorListener",
-                "_CellEditorListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "editingStopped", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlCellEditorListener
     public void editingCanceled(javax.swing.event.ChangeEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::CellEditorListener",
-                "_CellEditorListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "editingCanceled", event}
             );
         }

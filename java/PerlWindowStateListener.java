@@ -8,6 +8,8 @@ public class      PerlWindowStateListener
     String sender;
     String callbacks;
 
+    public PerlWindowStateListener() throws InlineJavaException { }
+
     public PerlWindowStateListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlWindowStateListener
         this.callbacks = callbacks;
     }
 
-    public void windowStateChanged(java.awt.event.WindowEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void windowStateChanged(java.awt.event.WindowEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::WindowStateListener",
-                "_WindowStateListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "windowStateChanged", event}
             );
         }

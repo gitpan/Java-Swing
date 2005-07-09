@@ -8,6 +8,8 @@ public class      PerlTableModelListener
     String sender;
     String callbacks;
 
+    public PerlTableModelListener() throws InlineJavaException { }
+
     public PerlTableModelListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlTableModelListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void tableChanged(javax.swing.event.TableModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TableModelListener",
-                "_TableModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "tableChanged", event}
             );
         }

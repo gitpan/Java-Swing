@@ -8,6 +8,8 @@ public class      PerlInternalFrameListener
     String sender;
     String callbacks;
 
+    public PerlInternalFrameListener() throws InlineJavaException { }
+
     public PerlInternalFrameListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlInternalFrameListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void internalFrameOpened(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameOpened", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlInternalFrameListener
     public void internalFrameClosing(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameClosing", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlInternalFrameListener
     public void internalFrameClosed(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameClosed", event}
             );
         }
@@ -63,8 +68,8 @@ public class      PerlInternalFrameListener
     public void internalFrameIconified(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameIconified", event}
             );
         }
@@ -78,8 +83,8 @@ public class      PerlInternalFrameListener
     public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameDeiconified", event}
             );
         }
@@ -93,8 +98,8 @@ public class      PerlInternalFrameListener
     public void internalFrameActivated(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameActivated", event}
             );
         }
@@ -108,8 +113,8 @@ public class      PerlInternalFrameListener
     public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InternalFrameListener",
-                "_InternalFrameListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "internalFrameDeactivated", event}
             );
         }

@@ -8,6 +8,8 @@ public class      PerlCaretListener
     String sender;
     String callbacks;
 
+    public PerlCaretListener() throws InlineJavaException { }
+
     public PerlCaretListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlCaretListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void caretUpdate(javax.swing.event.CaretEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::CaretListener",
-                "_CaretListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "caretUpdate", event}
             );
         }

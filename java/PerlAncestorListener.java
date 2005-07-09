@@ -8,6 +8,8 @@ public class      PerlAncestorListener
     String sender;
     String callbacks;
 
+    public PerlAncestorListener() throws InlineJavaException { }
+
     public PerlAncestorListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlAncestorListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void ancestorAdded(javax.swing.event.AncestorEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::AncestorListener",
-                "_AncestorListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "ancestorAdded", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlAncestorListener
     public void ancestorRemoved(javax.swing.event.AncestorEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::AncestorListener",
-                "_AncestorListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "ancestorRemoved", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlAncestorListener
     public void ancestorMoved(javax.swing.event.AncestorEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::AncestorListener",
-                "_AncestorListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "ancestorMoved", event}
             );
         }

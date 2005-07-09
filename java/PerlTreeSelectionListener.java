@@ -8,6 +8,8 @@ public class      PerlTreeSelectionListener
     String sender;
     String callbacks;
 
+    public PerlTreeSelectionListener() throws InlineJavaException { }
+
     public PerlTreeSelectionListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlTreeSelectionListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void valueChanged(javax.swing.event.TreeSelectionEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TreeSelectionListener",
-                "_TreeSelectionListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "valueChanged", event}
             );
         }

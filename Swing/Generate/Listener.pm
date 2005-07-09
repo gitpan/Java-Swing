@@ -7,22 +7,23 @@ our @EXPORT = qw(generate_listener generate_module);
 
 # This package makes Java programs which implement listeners.  Call generate
 # with a hash like this:
-{
-    'listener' => 'TreeWillExpandListener',
-    'methods' => [
-        {
-            'name' => 'treeWillExpand',
-            'type' => 'javax.swing.event.TreeExpansionEvent',
-            'throws' => 'javax.swing.tree.ExpandVetoException'
-        },
-        {
-            'name' => 'treeWillCollapse',
-            'type' => 'javax.swing.event.TreeExpansionEvent',
-            'throws' => 'javax.swing.tree.ExpandVetoException'
-        }
-    ],
-    'full_name' => 'javax.swing.event.TreeWillExpandListener'
-}
+#{
+#    'listener' => 'TreeWillExpandListener',
+#    'methods' => [
+#        {
+#            'name' => 'treeWillExpand',
+#            'type' => 'javax.swing.event.TreeExpansionEvent',
+#            'throws' => 'javax.swing.tree.ExpandVetoException'
+#        },
+#        {
+#            'name' => 'treeWillCollapse',
+#            'type' => 'javax.swing.event.TreeExpansionEvent',
+#            'throws' => 'javax.swing.tree.ExpandVetoException'
+#        }
+#    ],
+#    'full_name' => 'javax.swing.event.TreeWillExpandListener'
+#}
+#
 # Alternatively, you can generate a batch of listeners using decomp_listeners
 # and all_listeners in this directory.
 
@@ -78,12 +79,17 @@ public class      Perl${name}
     String sender;
     String callbacks;
 
+    public Perl${name}() throws InlineJavaException { }
+
     public Perl${name}(String sender, String callbacks)
         throws InlineJavaException
     {
         this.sender    = sender;
         this.callbacks = callbacks;
     }
+
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
 
 EODECL
 }
@@ -101,8 +107,8 @@ sub generate_method {
     public void $method_name($type event) $throws_clause {
         try {
             CallPerl(
-                "Java::Swing::$listener",
-                "$sub_name",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "$method_name", event}
             );
         }

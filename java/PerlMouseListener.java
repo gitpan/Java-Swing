@@ -8,6 +8,8 @@ public class      PerlMouseListener
     String sender;
     String callbacks;
 
+    public PerlMouseListener() throws InlineJavaException { }
+
     public PerlMouseListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlMouseListener
         this.callbacks = callbacks;
     }
 
-    public void mouseClicked(java.awt.event.MouseEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void mouseClicked(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseListener",
-                "_MouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseClicked", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlMouseListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void mousePressed(java.awt.event.MouseEvent event) {
+    public void mousePressed(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseListener",
-                "_MouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mousePressed", event}
             );
         }
@@ -45,11 +50,11 @@ public class      PerlMouseListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void mouseReleased(java.awt.event.MouseEvent event) {
+    public void mouseReleased(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseListener",
-                "_MouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseReleased", event}
             );
         }
@@ -60,11 +65,11 @@ public class      PerlMouseListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void mouseEntered(java.awt.event.MouseEvent event) {
+    public void mouseEntered(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseListener",
-                "_MouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseEntered", event}
             );
         }
@@ -75,11 +80,11 @@ public class      PerlMouseListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void mouseExited(java.awt.event.MouseEvent event) {
+    public void mouseExited(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseListener",
-                "_MouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseExited", event}
             );
         }

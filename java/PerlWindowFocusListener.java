@@ -8,6 +8,8 @@ public class      PerlWindowFocusListener
     String sender;
     String callbacks;
 
+    public PerlWindowFocusListener() throws InlineJavaException { }
+
     public PerlWindowFocusListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlWindowFocusListener
         this.callbacks = callbacks;
     }
 
-    public void windowGainedFocus(java.awt.event.WindowEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void windowGainedFocus(java.awt.event.WindowEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::WindowFocusListener",
-                "_WindowFocusListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "windowGainedFocus", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlWindowFocusListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void windowLostFocus(java.awt.event.WindowEvent event) {
+    public void windowLostFocus(java.awt.event.WindowEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::WindowFocusListener",
-                "_WindowFocusListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "windowLostFocus", event}
             );
         }

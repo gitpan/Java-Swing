@@ -8,6 +8,8 @@ public class      PerlMenuKeyListener
     String sender;
     String callbacks;
 
+    public PerlMenuKeyListener() throws InlineJavaException { }
+
     public PerlMenuKeyListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlMenuKeyListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void menuKeyTyped(javax.swing.event.MenuKeyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuKeyListener",
-                "_MenuKeyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuKeyTyped", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlMenuKeyListener
     public void menuKeyPressed(javax.swing.event.MenuKeyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuKeyListener",
-                "_MenuKeyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuKeyPressed", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlMenuKeyListener
     public void menuKeyReleased(javax.swing.event.MenuKeyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuKeyListener",
-                "_MenuKeyListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuKeyReleased", event}
             );
         }

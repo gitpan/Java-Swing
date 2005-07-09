@@ -8,6 +8,8 @@ public class      PerlContainerListener
     String sender;
     String callbacks;
 
+    public PerlContainerListener() throws InlineJavaException { }
+
     public PerlContainerListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlContainerListener
         this.callbacks = callbacks;
     }
 
-    public void componentAdded(java.awt.event.ContainerEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void componentAdded(java.awt.event.ContainerEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ContainerListener",
-                "_ContainerListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "componentAdded", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlContainerListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void componentRemoved(java.awt.event.ContainerEvent event) {
+    public void componentRemoved(java.awt.event.ContainerEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ContainerListener",
-                "_ContainerListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "componentRemoved", event}
             );
         }

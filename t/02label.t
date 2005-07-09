@@ -11,7 +11,7 @@ my $label = JLabel->new(
 
 isa_ok(
     $label,
-    "JLabel::javax::swing::JLabel",
+    "Java::Swing::javax::swing::JLabel",
     "named attributes in constructor"
 );
 

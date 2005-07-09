@@ -8,6 +8,8 @@ public class      PerlChangeListener
     String sender;
     String callbacks;
 
+    public PerlChangeListener() throws InlineJavaException { }
+
     public PerlChangeListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlChangeListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void stateChanged(javax.swing.event.ChangeEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ChangeListener",
-                "_ChangeListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "stateChanged", event}
             );
         }

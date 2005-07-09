@@ -41,3 +41,4 @@ javac -classpath /usr/src/Inline-Java-0.47/Java/classes PerlUndoableEditListener
 javac -classpath /usr/src/Inline-Java-0.47/Java/classes PerlWindowFocusListener.java
 javac -classpath /usr/src/Inline-Java-0.47/Java/classes PerlWindowListener.java
 javac -classpath /usr/src/Inline-Java-0.47/Java/classes PerlWindowStateListener.java
+javac PerlGridBagConstraints.java

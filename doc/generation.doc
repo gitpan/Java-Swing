@@ -1,0 +1,20 @@
+Note that this works on my red hat 8 system, but it might help if you need
+to add listeners.
+
+The originals were built from j2sdk 1.4.1_02 for linux.  Including
+java.awt.event, java.awt.dnd, and javax.swing.event.
+
+To make listener modules:
+cd Swing/Generate
+./decomp_listeners java.awt.event /usr/java/j2sdk1.4.1_02/java/awt/event/ > decomp_list.out
+Repeat for javax.swing.event
+
+cd ../..
+perl -Iblib/lib Swing/Generate/all_listeners Swing/Generate/decomp_list.out Swing/Generate/java Swing/Generate/perl
+
+The generated perl modules are no longer needed, but all_listeners still
+generates them.  Discard all files in Swing/Generate/perl.
+
+Compile the resulting java files (remember that the Inline::Java java classes
+must be in your classpath during compilation).  For example see java/project
+in the distribution.  Your paths may vary.

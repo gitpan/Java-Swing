@@ -8,6 +8,8 @@ public class      PerlDocumentListener
     String sender;
     String callbacks;
 
+    public PerlDocumentListener() throws InlineJavaException { }
+
     public PerlDocumentListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlDocumentListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void insertUpdate(javax.swing.event.DocumentEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DocumentListener",
-                "_DocumentListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "insertUpdate", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlDocumentListener
     public void removeUpdate(javax.swing.event.DocumentEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DocumentListener",
-                "_DocumentListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "removeUpdate", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlDocumentListener
     public void changedUpdate(javax.swing.event.DocumentEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DocumentListener",
-                "_DocumentListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "changedUpdate", event}
             );
         }

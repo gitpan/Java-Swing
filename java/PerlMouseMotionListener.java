@@ -8,6 +8,8 @@ public class      PerlMouseMotionListener
     String sender;
     String callbacks;
 
+    public PerlMouseMotionListener() throws InlineJavaException { }
+
     public PerlMouseMotionListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlMouseMotionListener
         this.callbacks = callbacks;
     }
 
-    public void mouseDragged(java.awt.event.MouseEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void mouseDragged(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseMotionListener",
-                "_MouseMotionListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseDragged", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlMouseMotionListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void mouseMoved(java.awt.event.MouseEvent event) {
+    public void mouseMoved(java.awt.event.MouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MouseMotionListener",
-                "_MouseMotionListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "mouseMoved", event}
             );
         }

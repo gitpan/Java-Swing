@@ -8,6 +8,8 @@ public class      PerlListSelectionListener
     String sender;
     String callbacks;
 
+    public PerlListSelectionListener() throws InlineJavaException { }
+
     public PerlListSelectionListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlListSelectionListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void valueChanged(javax.swing.event.ListSelectionEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ListSelectionListener",
-                "_ListSelectionListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "valueChanged", event}
             );
         }

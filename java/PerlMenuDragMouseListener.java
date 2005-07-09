@@ -8,6 +8,8 @@ public class      PerlMenuDragMouseListener
     String sender;
     String callbacks;
 
+    public PerlMenuDragMouseListener() throws InlineJavaException { }
+
     public PerlMenuDragMouseListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlMenuDragMouseListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void menuDragMouseEntered(javax.swing.event.MenuDragMouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuDragMouseListener",
-                "_MenuDragMouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuDragMouseEntered", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlMenuDragMouseListener
     public void menuDragMouseExited(javax.swing.event.MenuDragMouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuDragMouseListener",
-                "_MenuDragMouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuDragMouseExited", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlMenuDragMouseListener
     public void menuDragMouseDragged(javax.swing.event.MenuDragMouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuDragMouseListener",
-                "_MenuDragMouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuDragMouseDragged", event}
             );
         }
@@ -63,8 +68,8 @@ public class      PerlMenuDragMouseListener
     public void menuDragMouseReleased(javax.swing.event.MenuDragMouseEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuDragMouseListener",
-                "_MenuDragMouseListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuDragMouseReleased", event}
             );
         }

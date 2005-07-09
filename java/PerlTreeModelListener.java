@@ -8,6 +8,8 @@ public class      PerlTreeModelListener
     String sender;
     String callbacks;
 
+    public PerlTreeModelListener() throws InlineJavaException { }
+
     public PerlTreeModelListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlTreeModelListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void treeNodesChanged(javax.swing.event.TreeModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TreeModelListener",
-                "_TreeModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "treeNodesChanged", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlTreeModelListener
     public void treeNodesInserted(javax.swing.event.TreeModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TreeModelListener",
-                "_TreeModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "treeNodesInserted", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlTreeModelListener
     public void treeNodesRemoved(javax.swing.event.TreeModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TreeModelListener",
-                "_TreeModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "treeNodesRemoved", event}
             );
         }
@@ -63,8 +68,8 @@ public class      PerlTreeModelListener
     public void treeStructureChanged(javax.swing.event.TreeModelEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::TreeModelListener",
-                "_TreeModelListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "treeStructureChanged", event}
             );
         }

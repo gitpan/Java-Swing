@@ -11,6 +11,8 @@ my $layout = GridBagLayout->new();
 my $constr = GridBagConstraints->new();
 $pane->setLayout($layout);
 
+# use Data::Dumper; print STDERR Dumper($constr);
+
 my $label1 = JLabel->new("Drag In");
 my $label2 = JLabel->new("This Window");
 

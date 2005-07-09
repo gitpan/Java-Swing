@@ -8,6 +8,8 @@ public class      PerlTreeWillExpandListener
     String sender;
     String callbacks;
 
+    public PerlTreeWillExpandListener() throws InlineJavaException { }
+
     public PerlTreeWillExpandListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlTreeWillExpandListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void treeWillExpand(javax.swing.event.TreeExpansionEvent event) throws javax.swing.tree.ExpandVetoException {
         try {
             CallPerl(
-                "Java::Swing::TreeWillExpandListener",
-                "_TreeWillExpandListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "treeWillExpand", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlTreeWillExpandListener
     public void treeWillCollapse(javax.swing.event.TreeExpansionEvent event) throws javax.swing.tree.ExpandVetoException {
         try {
             CallPerl(
-                "Java::Swing::TreeWillExpandListener",
-                "_TreeWillExpandListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "treeWillCollapse", event}
             );
         }

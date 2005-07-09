@@ -8,6 +8,8 @@ public class      PerlDropTargetListener
     String sender;
     String callbacks;
 
+    public PerlDropTargetListener() throws InlineJavaException { }
+
     public PerlDropTargetListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlDropTargetListener
         this.callbacks = callbacks;
     }
 
-    public void dragEnter(java.awt.dnd.DropTargetDragEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void dragEnter(java.awt.dnd.DropTargetDragEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DropTargetListener",
-                "_DropTargetListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "dragEnter", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlDropTargetListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void dragOver(java.awt.dnd.DropTargetDragEvent event) {
+    public void dragOver(java.awt.dnd.DropTargetDragEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DropTargetListener",
-                "_DropTargetListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "dragOver", event}
             );
         }
@@ -45,11 +50,11 @@ public class      PerlDropTargetListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void dropActionChanged(java.awt.dnd.DropTargetDragEvent event) {
+    public void dropActionChanged(java.awt.dnd.DropTargetDragEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DropTargetListener",
-                "_DropTargetListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "dropActionChanged", event}
             );
         }
@@ -60,11 +65,11 @@ public class      PerlDropTargetListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void dragExit(java.awt.dnd.DropTargetEvent event) {
+    public void dragExit(java.awt.dnd.DropTargetEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DropTargetListener",
-                "_DropTargetListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "dragExit", event}
             );
         }
@@ -75,11 +80,11 @@ public class      PerlDropTargetListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void drop(java.awt.dnd.DropTargetDropEvent event) {
+    public void drop(java.awt.dnd.DropTargetDropEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DropTargetListener",
-                "_DropTargetListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "drop", event}
             );
         }

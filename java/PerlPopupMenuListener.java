@@ -8,6 +8,8 @@ public class      PerlPopupMenuListener
     String sender;
     String callbacks;
 
+    public PerlPopupMenuListener() throws InlineJavaException { }
+
     public PerlPopupMenuListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlPopupMenuListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::PopupMenuListener",
-                "_PopupMenuListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "popupMenuWillBecomeVisible", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlPopupMenuListener
     public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::PopupMenuListener",
-                "_PopupMenuListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "popupMenuWillBecomeInvisible", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlPopupMenuListener
     public void popupMenuCanceled(javax.swing.event.PopupMenuEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::PopupMenuListener",
-                "_PopupMenuListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "popupMenuCanceled", event}
             );
         }

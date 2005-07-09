@@ -8,6 +8,8 @@ public class      PerlHyperlinkListener
     String sender;
     String callbacks;
 
+    public PerlHyperlinkListener() throws InlineJavaException { }
+
     public PerlHyperlinkListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlHyperlinkListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::HyperlinkListener",
-                "_HyperlinkListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "hyperlinkUpdate", event}
             );
         }

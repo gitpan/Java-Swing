@@ -8,6 +8,8 @@ public class      PerlHierarchyBoundsListener
     String sender;
     String callbacks;
 
+    public PerlHierarchyBoundsListener() throws InlineJavaException { }
+
     public PerlHierarchyBoundsListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlHierarchyBoundsListener
         this.callbacks = callbacks;
     }
 
-    public void ancestorMoved(java.awt.event.HierarchyEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void ancestorMoved(java.awt.event.HierarchyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::HierarchyBoundsListener",
-                "_HierarchyBoundsListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "ancestorMoved", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlHierarchyBoundsListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void ancestorResized(java.awt.event.HierarchyEvent event) {
+    public void ancestorResized(java.awt.event.HierarchyEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::HierarchyBoundsListener",
-                "_HierarchyBoundsListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "ancestorResized", event}
             );
         }

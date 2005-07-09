@@ -8,6 +8,8 @@ public class      PerlMenuListener
     String sender;
     String callbacks;
 
+    public PerlMenuListener() throws InlineJavaException { }
+
     public PerlMenuListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlMenuListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void menuSelected(javax.swing.event.MenuEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuListener",
-                "_MenuListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuSelected", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlMenuListener
     public void menuDeselected(javax.swing.event.MenuEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuListener",
-                "_MenuListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuDeselected", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlMenuListener
     public void menuCanceled(javax.swing.event.MenuEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::MenuListener",
-                "_MenuListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "menuCanceled", event}
             );
         }

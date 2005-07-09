@@ -1,22 +1,43 @@
 package Java::Swing;
 use strict; use warnings;
 
+use Carp;
 use Inline Java => 'DATA';
 
-our $VERSION = '0.03';
+our $VERSION = '0.10';
+
 my %callbacks;
+my %listeners;
 
-BEGIN {
-    # To add packages to the Java::Swing scheme, see PerlLocalPackages.pm.
+sub import {
+    # To add packages to the Java::Swing scheme, see PerlRealPackages.pm.
+    # Make your additions in PerlRealLocalPackages.pm or
+    # PerlFakeLocalPackages.pm.  You Real for modules that have a .pm file
+    # and Fake for modules this packages should fabricate.
 
-    use Java::Swing::PerlPackages;
-    use Java::Swing::PerlLocalPackages;
+    use Java::Swing::PerlRealPackages;
+    use Java::Swing::PerlRealLocalPackages;
     foreach my $package (
-        @Java::Swing::PerlPackages::packages,
-        @Java::Swing::PerlLocalPackages::local_packages,
+        @Java::Swing::PerlRealPackages::packages,
+        @Java::Swing::PerlRealLocalPackages::local_packages,
     ) {
         no strict;
         *{"$package\::AUTOLOAD"} = \&module_autoload;
+    }
+
+    use Java::Swing::PerlFakePackages;
+    use Java::Swing::PerlFakeLocalPackages;
+    my %package_names = (
+        %Java::Swing::PerlFakePackages::names,
+        %Java::Swing::PerlFakeLocalPackages::names,
+    );
+    foreach my $package (
+        @Java::Swing::PerlFakePackages::packages,
+        @Java::Swing::PerlFakeLocalPackages::local_packages,
+    ) {
+        no strict;
+        *{"$package\::AUTOLOAD"} =
+            gen_fake_module_autoload($package_names{$package});
     }
 }
 
@@ -29,6 +50,60 @@ sub module_autoload {
 
     goto &$command;
 }
+
+sub gen_fake_module_autoload {
+    my $package_name = shift || 'javax.swing';
+
+    return sub {
+        my $invocant = $_[0];
+        my $command  = our $AUTOLOAD;
+        my $studied  = "$package_name.$invocant";
+
+        Inline->bind(
+            Java       => 'STUDY',
+            SHARED_JVM => 1,
+            AUTOSTUDY  => 1,
+            STUDY      => [ $studied ],
+        );
+
+        no strict;
+        *{"$invocant\::new"} = gen_generic_new($package_name);
+
+        goto &$command;
+    }
+}
+
+sub gen_generic_new {
+    my $package_name = shift;
+    $package_name    =~ s/\./::/g;
+
+    return sub {
+        my $class        = shift;
+        my $inline_class = "Java\::Swing\::$package_name\::$class";
+
+        # if we were passed a hash reference, construct a default object, then
+        # call set on each hash key with the value
+        if (ref($_[0]) =~ /HASH/) {  # call no arg constructor and accessors
+            my $attributes = shift;
+            my $retval     = $inline_class->new();
+            foreach my $attribute (keys %$attributes) {
+                my $setter = "set" . ucfirst($attribute);
+                eval { $retval->$setter($attributes->{$attribute}); };
+                if ($@) {
+                    croak "Error: '$attribute' is not an attribute of $class";
+                }
+            }
+            return $retval;
+        }
+        else { # pass args directly to constructor
+            return $inline_class->new(@_);
+        }
+    }
+}
+
+# -------------------------------------------------------------------
+# -----     Methods for Java::Swing objects                     -----
+# -------------------------------------------------------------------
 
 sub new {
     my $class = shift;
@@ -51,18 +126,83 @@ sub stop {
     $self->{OBJECT}->StopCallbackLoop();
 }
 
+# See Timer.pm for an example of using the delayed approach.  To summarize,
+# if you need to pass your listener to the constructor of your sender,
+# call delayed_connect to get your listener.  Pass it to the constructor.
+# Then call finish_delayed_connect with all three pieces (listener, sender,
+# and callbacks).
+sub delayed_connect {
+    my $invocant         = shift;  # not used
+    my $listener_type    = shift;
+    my $studied          = "Perl$listener_type";
+
+    Inline->bind(
+        Java       => 'STUDY',
+        SHARED_JVM => 1,
+        AUTOSTUDY  => 1,
+        STUDY      => [ $studied ],
+    );
+
+    my $listening_class  = 'Java::Swing::'
+                         . "Perl$listener_type";
+
+    my $listener         = $listening_class->new();
+
+    return $listener;
+}
+
+sub finish_delayed_connect {
+    my $invocant         = shift;  # not used
+    my $listener         = shift;
+    my $sender           = shift;
+    my $callbacks        = shift;
+    my $send_name        = ref $sender;     # stringify these
+    my $call_name        = ref $callbacks;
+
+    $callbacks{$send_name}{$call_name} = $callbacks;
+    $listeners{$send_name}{$call_name} = $listener;
+
+    $listener->setSender($send_name);
+    $listener->setCallbacks($call_name);
+}
+
 sub connect {
     my $invocant         = shift;  # not used
     my $listener_type    = shift;
     my $sender           = shift;
     my $callbacks        = shift;
-    my $listener_package = "Java::Swing::$listener_type";
+    my $studied          = "Perl$listener_type";
 
-    require "Java/Swing/$listener_type.pm";
+    Inline->bind(
+        Java       => 'STUDY',
+        SHARED_JVM => 1,
+        AUTOSTUDY  => 1,
+        STUDY      => [ $studied ],
+    );
 
-    $listener_package->connect($sender, $callbacks);
+    delegate_connection($listener_type, $sender, $callbacks);
 }
 
+sub delegate_connection {
+    my $listener_type    = shift;
+    my $sender           = shift;
+    my $callbacks        = shift;
+    my $send_name        = ref $sender;     # stringify these
+    my $call_name        = ref $callbacks;
+
+    my $listening_class  = 'Java::Swing::'
+                         . "Perl$listener_type";
+
+    my $listener         = $listening_class->new($send_name, $call_name);
+
+    $callbacks{$send_name}{$call_name} = $callbacks;
+    $listeners{$send_name}{$call_name} = $listener;
+
+    my $add_method       = "add$listener_type";
+    $sender->$add_method($listener);
+}
+
+# XXX not tested
 sub disconnect {
     my $invocant         = shift;  # not used
     my $listener_type    = shift;
@@ -71,6 +211,20 @@ sub disconnect {
     my $listener_package = "Java::Swing::$listener_type";
 
     $listener_package->disconnect($sender, $callbacks);
+}
+
+sub _Listener {  # for the private use of our java class friends.
+    my $sender_name      = shift;
+    my $callbacks_name   = shift;
+    my $triggered_method = shift;
+    my $event            = shift;
+
+    my $methods = $callbacks{$sender_name}{$callbacks_name}
+        or die "No registered callback for $sender_name $callbacks_name\n";
+    my $method = $methods->{$triggered_method} || sub {};
+
+    no strict;
+    $method->($sender, $event);
 }
 
 1;
@@ -113,9 +267,7 @@ Java::Swing - Perl extension providing direct access to the Java Swing API
 
 =head1 ABSTRACT
 
-  This package provides direct access to the Java Swing toolkit from Perl.
-  It is similar in spirit to Gtk2 (from CPAN).  You need to install Inline
-  and Inline::Java before using it.
+  Provides direct access to the Java Swing toolkit from Perl.
 
 =head1 DESCRIPTION
 
@@ -427,8 +579,9 @@ Swing/Generate directory of the distribution):
 =item 1
 
 Use C<decomp_listeners>, giving it the package name and the directory where
-source and class files live.  (If you don't have sources, modify the script.
-It doesn't need them, but I'm too lazy to test it in that case.)
+source and class files live.  (Note that it relies on a hard coded path
+to your rt.jar, change that to the correct location.)
+(If you don't have sources, you'll have to change the script substantially.)
 The output comes to standard out, store it in a file.
 
 =item 2

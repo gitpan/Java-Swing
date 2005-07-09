@@ -8,6 +8,8 @@ public class      PerlInputMethodListener
     String sender;
     String callbacks;
 
+    public PerlInputMethodListener() throws InlineJavaException { }
+
     public PerlInputMethodListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlInputMethodListener
         this.callbacks = callbacks;
     }
 
-    public void inputMethodTextChanged(java.awt.event.InputMethodEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void inputMethodTextChanged(java.awt.event.InputMethodEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InputMethodListener",
-                "_InputMethodListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "inputMethodTextChanged", event}
             );
         }
@@ -30,11 +35,11 @@ public class      PerlInputMethodListener
             System.err.println("couldn't call perl ije: " + ije);
         }
     }
-    public void caretPositionChanged(java.awt.event.InputMethodEvent event) {
+    public void caretPositionChanged(java.awt.event.InputMethodEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::InputMethodListener",
-                "_InputMethodListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "caretPositionChanged", event}
             );
         }

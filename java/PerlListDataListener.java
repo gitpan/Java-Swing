@@ -8,6 +8,8 @@ public class      PerlListDataListener
     String sender;
     String callbacks;
 
+    public PerlListDataListener() throws InlineJavaException { }
+
     public PerlListDataListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlListDataListener
         this.callbacks = callbacks;
     }
 
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
     public void intervalAdded(javax.swing.event.ListDataEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ListDataListener",
-                "_ListDataListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "intervalAdded", event}
             );
         }
@@ -33,8 +38,8 @@ public class      PerlListDataListener
     public void intervalRemoved(javax.swing.event.ListDataEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ListDataListener",
-                "_ListDataListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "intervalRemoved", event}
             );
         }
@@ -48,8 +53,8 @@ public class      PerlListDataListener
     public void contentsChanged(javax.swing.event.ListDataEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ListDataListener",
-                "_ListDataListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "contentsChanged", event}
             );
         }

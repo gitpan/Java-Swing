@@ -8,6 +8,8 @@ public class      PerlItemListener
     String sender;
     String callbacks;
 
+    public PerlItemListener() throws InlineJavaException { }
+
     public PerlItemListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlItemListener
         this.callbacks = callbacks;
     }
 
-    public void itemStateChanged(java.awt.event.ItemEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void itemStateChanged(java.awt.event.ItemEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::ItemListener",
-                "_ItemListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "itemStateChanged", event}
             );
         }

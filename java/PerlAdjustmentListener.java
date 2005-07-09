@@ -8,6 +8,8 @@ public class      PerlAdjustmentListener
     String sender;
     String callbacks;
 
+    public PerlAdjustmentListener() throws InlineJavaException { }
+
     public PerlAdjustmentListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlAdjustmentListener
         this.callbacks = callbacks;
     }
 
-    public void adjustmentValueChanged(java.awt.event.AdjustmentEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void adjustmentValueChanged(java.awt.event.AdjustmentEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::AdjustmentListener",
-                "_AdjustmentListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "adjustmentValueChanged", event}
             );
         }

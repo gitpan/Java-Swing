@@ -8,6 +8,8 @@ public class      PerlDragSourceMotionListener
     String sender;
     String callbacks;
 
+    public PerlDragSourceMotionListener() throws InlineJavaException { }
+
     public PerlDragSourceMotionListener(String sender, String callbacks)
         throws InlineJavaException
     {
@@ -15,11 +17,14 @@ public class      PerlDragSourceMotionListener
         this.callbacks = callbacks;
     }
 
-    public void dragMouseMoved(java.awt.dnd.DragSourceDragEvent event) {
+    public void setSender   (String sender)    { this.sender    = sender; }
+    public void setCallbacks(String callbacks) { this.callbacks = callbacks; }
+
+    public void dragMouseMoved(java.awt.dnd.DragSourceDragEvent event)  {
         try {
             CallPerl(
-                "Java::Swing::DragSourceMotionListener",
-                "_DragSourceMotionListener",
+                "Java::Swing",
+                "_Listener",
                 new Object[] {sender, callbacks, "dragMouseMoved", event}
             );
         }
