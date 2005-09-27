@@ -1,6 +1,7 @@
 Is is possible to have the java code generated and bound at run time?
+    See version 0.10.
 
-PerlActionListener.java is need not be unique.  Rerun all generations
+PerlActionListener.java need not be unique.  Rerun all generations
 with this in mind.  In other words, if a generated solution is needed,
 it should still have get/set for the sender/callback and a no arg constructor.
 This will allow all classes to work like ActionListener to avoid strangeness.

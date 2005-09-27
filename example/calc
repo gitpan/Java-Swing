@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 use strict; use warnings;
 
 # This program provides an example of a simple Java::Swing application.
@@ -9,7 +8,7 @@ use strict; use warnings;
 # the Java::Swing classes in the classpath.  In the distribution this is
 # called java.
 
-BEGIN { $ENV{CLASSPATH} .= ';java' }
+BEGIN { $ENV{CLASSPATH} .= ':java' }
 
 use Java::Swing;
 

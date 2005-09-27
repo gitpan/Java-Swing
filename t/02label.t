@@ -21,7 +21,7 @@ is($label->getHorizontalAlignment(), SwingConstants->RIGHT, "atribute set");
 
 eval {
     $label = JLabel->new(
-        { text => 'label', 8 }
+        { text => 'label', 8 => 2 }
     );
 };
 

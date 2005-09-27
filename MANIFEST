@@ -15,8 +15,7 @@ Swing/Generate/all_listeners
 Swing/Generate/decomp_listeners
 TODO
 doc/generation.doc
-example/calc.unix
-example/calc.win32
+example/calc
 java/PerlAWTEventListener.class
 java/PerlAWTEventListener.java
 java/PerlActionListener.class
@@ -113,3 +112,4 @@ t/03simple.t
 t/04mouse.t
 t/05gridbag.t
 t/06timer.t
+META.yml                                 Module meta-data (added by MakeMaker)

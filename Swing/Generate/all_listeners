@@ -44,11 +44,10 @@ our $grammar = q(
 
 our $parser = Parse::RecDescent->new($grammar);
 
-my $with_usage   = "usage: $0 decompiled_file java_src_dir perl_module_dir\n";
+my $with_usage   = "usage: $0 decompiled_file java_src_dir\n";
 my $decomp_file  = shift or die $with_usage;
 # to generate the decompiled file, see decomp_listeners
 my $java_src_dir = shift or die $with_usage;
-my $perl_mod_dir = shift or die $with_usage;
 
 $/ = "";  # paragraph mode
 
@@ -79,7 +78,7 @@ sub make_perl_helper {
 #    use Data::Dumper; print Dumper($parsed_value);
 
     my $java_code = generate_listener($answer);
-    my $perl_code = generate_module($answer);
+#    my $perl_code = generate_module($answer);
 
     unless (open JAVA, ">$java_src_dir/Perl$answer->{name}.java") {
         warn "couldn't write $java_src_dir/Perl$answer->{name}.java skipping\n";
@@ -88,10 +87,10 @@ sub make_perl_helper {
     print JAVA $java_code;
     close JAVA;
 
-    unless (open PERL, ">$perl_mod_dir/$answer->{name}.pm") {
-        warn "couldn't write $perl_mod_dir/$answer->{name}.pm skipping\n";
-        return;
-    }
-    print PERL $perl_code;
-    close PERL;
+#    unless (open PERL, ">$perl_mod_dir/$answer->{name}.pm") {
+#        warn "couldn't write $perl_mod_dir/$answer->{name}.pm skipping\n";
+#        return;
+#    }
+#    print PERL $perl_code;
+#    close PERL;
 }

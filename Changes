@@ -1,5 +1,16 @@
 Revision history for Perl extension Java::Swing.
 
+0.11  Tue Sep 27 17:50:06 CDT 2005
+        - Cleaned documentation, especially as it relates to adding new
+          listeners to Java::Swing.
+        - Corrected the callback parameters so they match the documentation.
+          You get the stringified sender and the real event object.  (Before
+          you got undef and the real event object.)  Ask the object if you
+          need the java object that generated the event (try using getSource).
+        - Cleaned all_listeners in Swing/Generate so that it no longer
+          generates the Perl modules which used to be needed, but were
+          replaced in version 0.10 with methods in Swing.pm.
+
 0.10  Sat Jul  9 11:04:10 CDT 2005
         - Removed unneeded variable from Swing.pm for clarity.
         - Removed all but three physical Perl proxy modules.  Moved to

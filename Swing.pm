@@ -4,7 +4,7 @@ use strict; use warnings;
 use Carp;
 use Inline Java => 'DATA';
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 my %callbacks;
 my %listeners;
@@ -12,8 +12,8 @@ my %listeners;
 sub import {
     # To add packages to the Java::Swing scheme, see PerlRealPackages.pm.
     # Make your additions in PerlRealLocalPackages.pm or
-    # PerlFakeLocalPackages.pm.  You Real for modules that have a .pm file
-    # and Fake for modules this packages should fabricate.
+    # PerlFakeLocalPackages.pm.  Use Real for modules that have a .pm file
+    # and Fake for modules this package should fabricate.
 
     use Java::Swing::PerlRealPackages;
     use Java::Swing::PerlRealLocalPackages;
@@ -224,7 +224,7 @@ sub _Listener {  # for the private use of our java class friends.
     my $method = $methods->{$triggered_method} || sub {};
 
     no strict;
-    $method->($sender, $event);
+    $method->($sender_name, $event);
 }
 
 1;
@@ -235,7 +235,7 @@ Java::Swing - Perl extension providing direct access to the Java Swing API
 
 =head1 SYNOPSIS
 
-  BEGIN { $ENV{CLASSPATH} .= ':java'; }
+  BEGIN { $ENV{CLASSPATH} .= ':/path/to/Java/Swing/java'; }
 
   use Java::Swing;
   my $swinger = Java::Swing->new();
@@ -273,20 +273,25 @@ Java::Swing - Perl extension providing direct access to the Java Swing API
 
 Though you can write a Java program which is driven by Perl, some people
 may prefer to keep their Perl pure.  This package lets you do that in manner
-similar to the way Perl/Tk and Gtk2:: provide access to their underlying C
+similar to the way Perl/Tk and Gtk2:: provide access to their underlying
 libraries.  This lets us code in our favorite language, while using the
-graphical interface capabilities of Java Swing.  Swing is advantageous
-since it is highly platform independent.
+graphical interface capabilities of Java Swing.
 
 =head1 EXAMPLE
 
-In the example directory of the distribution there are two examples that
-differ by only one character.  The unix version uses : for the classpath
-separator, win32 uses ;.  The unix version is below, for no particular
-reason.  Comments are interspersed.  To see the uninterrupted version,
-look for example/calc.*.
+In the example directory of the distribution there is an example called
+calc.  Here I will walk through it a bit at a time.  To see it in one
+piece look in the untarred distribution.  To run it after make
+and before installing Java::Swing type:
 
-    #!/usr/bin/perl
+    perl -I blib/lib example/calc
+
+After installation just use:
+
+    perl example/calc
+
+But remember to change the path separators to fit your OS.
+
     use strict; use warnings;
 
     # This program provides an example of a simple Java::Swing application.
@@ -312,7 +317,8 @@ for event listeners.
 
 This innocuous looking statement actually sets up the aliases that make it
 easy to refer to Java Swing classes.  In particular, it sets up namespaces
-for each widget so you can refer to them directly as shown immediately below.
+for each Component so you can refer to them directly as shown immediately
+below.  It does not load the Java classes until you actually use them.
 
     my $expression  = JTextField->new();
     my $answer      = JTextField->new( { columns => 10 } );
@@ -326,9 +332,9 @@ class name alone as if it name were a Perl package name.  All class methods,
 including constructors, can be called as normal through this Perl package
 name.
 
-But, if you like, you may also used Java::Swing named attribute construction,
+But, if you like, you may also use Java::Swing named attribute construction,
 as shown for the second JTextField above.  Simply supply a hash reference
-whose keys are attributes of the widget with the proper values.  Your object
+whose keys are attributes of the class with the proper values.  Your object
 will be constructed by calling the empty argument constructor.  Then the
 attribute values will be supplied by calling set accessors.  So columns => 10
 will translate into setColumns(10).
@@ -343,9 +349,9 @@ will translate into setColumns(10).
     $frame->setSize(300, 100);
     $frame->show();
 
-These lines perform widget layout.  If you are not familiar with layouts in
+These lines perform Component layout.  If you are not familiar with layouts in
 Java Swing (which has the same scheme as awt), consult a book (O'Reilly
-has more than one that will do, try the Java Foundation Classes Nutshell
+has more than one that will do, try the Java Foundation Classes in a Nutshell
 or Java Swing).
 
     my $swinger = Java::Swing->new();
@@ -406,8 +412,8 @@ setText.
     }
 
 When you receive control via an event, you can stop the Java event loop by
-calling stop on you Java::Swing object.  Here that happens when the user
-closes the window.
+calling stop on your Java::Swing object.  Here that happens when the user
+closes the window.  When you stop the event loop, your program terminates.
 
 =head1 EXTENDING
 
@@ -417,89 +423,48 @@ in house code which you would like to incoroprate into this scheme.
 This section explains the pieces needed to use other code as part of
 Java::Swing.
 
-=head2 Adding Widgets or Families of Them
+=head2 Adding Components or Families of Them
 
-While most of the widgets from Swing are implemented, AWT, SWT and other
-kits are not implemented (though parts of AWT are).  If you have one
-widget to add do the following:
+While most of the Components from Swing are implemented, AWT, SWT and other
+kits are not implemented (though parts of AWT are).  Most Components have
+the same basic plan.  They are part of Swing.  They have a no argument
+constructor and accessors for all of their attributes.  If that describes
+your widget, there is only one thing to do:
 
-=over 4
+    Add the base name of your class to the @packages list in
+    Swing::PerlFakeLocalPackages
 
-=item 1
+If your widget is not at the top level of its package include the
+subdirectories leading from the package to it like so:
 
-Make a module in the Java/Swing directory or a subdirectory of it named
-for the Java class.
+    text::html::AccessibleHTML
 
-=item 2
+If the widget has all of the above traits, but is in a different package,
+you should still add it to C<@packages> in C<Swing::PerlFakeLocalPackages>.
+But, you also need to add an entry for it in C<%names> like so:
 
-Name the package for your new module with the Java class name (don't include
-Java::Swing in front)
+    YourWidget => 'com.yourcompany.package',
 
-=item 3
-
-Use the widget_generator program (in the Swing/Generate subdirectory of the
-distribution) or follow the plan in any of the standard widgets like
-JFrame or JButton.
-
-=item 4
-
-Add your short package name to the list in PerlLocalPackages.pm.
-
-=item 5
-
-If you need an AUTOLOAD in your module, turn warnings off before defining
-it.  Swing.pm uses AUTOLOAD to avoid loading all modules at once.  Your
-AUTOLOAD will be a redefinition which generates a warning.
-
-=item 6
+If you are adding lots of widgets, you'll want to automate this, but
+I don't have a lot of advice on how to do so.  I did it once and forgot
+the scripts.  I don't think they were complex.
 
 If the Java class is standard (for some sense of standard), send the module
 to me so I can add it to future distributions.
 
-=back
-
-For one widget, the above is easy enough.  If you need to add multiple
-widgets (like if you want to implement all of SWT), there is another way.
-
-=over 4
-
-=item 1
-
-Use all_widgets (in the Swing/Generate subdirectory of the distribution).
-Provide it with the Java package name (like java.awt), the directory
-containing the java source files you want to incorporate, and a directory
-where perl modules should be built.
-
-=item 2
-
-After you verify that you have the perl modules of your choosing, copy or
-move them into the Swing directory of the distribution, unless you built
-them in place in step 1.
-
-=item 3
-
-Update the list of widgets, usually in PerlLocalPackages.pm.
-
-=item 4
-
-If your additions are for common classes, send in the modules.  Then they
-might be added to the widget list in PerlPackages.pm and shipped with new
-versions of Java::Swing with hearty thanks.
-
-=back
-
 =head2 Adding Listeners
 
 In Java::Swing, events are handled through callbacks to Perl code.  To make
-that happen, there are two pieces (1) a Java class which implements the
-listener interface and (2) a Perl module which Perl programs use.  These
-pieces can be hand coded, but that is a pain (and prone to error).
+the callbacks happen, you need a Java class which implements the
+listener interface.  As of version 0.10, you no longer need a corresponding
+Perl module, the code from those modules is now implemented once in
+Swing.pm.  It is possible to hand code the Java listener implementation,
+but it is a pain.
 
 There are two real possibilities.  Either you have a single listener or
-you have several.  In the first case, you can use listener_generator
-and listener_mod_generator (the first make the java piece, the second
-makes the perl piece).  In the second case, you should use decomp_listeners
-followed by all_listeners.  Details follow.
+you have several.  In the first case, you can use listener_generator.
+This script is not installed, but can be found in the Swing/Generate
+subdirectory of the distribution.  Details follow.
 
 =head3 One Listener at a Time
 
@@ -529,7 +494,7 @@ Always use all three keys:
 
 =item full_name
 
-The fully qualified name of the listener.
+The fully qualified name of the listener interface.
 
 =item listener
 
@@ -558,13 +523,12 @@ The type of event the method throws.
 =back
 
 Once you have a file describing your listener, run C<listener_generator>
-and C<listener_mod_generator> with that file as the only command line
-argument.  Both of these write to standard out.  Save the resulting files
-as C<PerlNameListener.java> and C<NameListener.pm> respectively.  When you
+with that file as the only command line argument.  This writes to standard
+out.  Save the resulting file as C<PerlNameListener.java>.  When you
 compile the java file, include the Inline classes in the CLASSPATH, these
 will be in a directory like 
 
-    /usr/src/Inline-Java-0.47/Java/classes
+    /cpan/modules/Inline-Java-0.47/Java/classes
 
 (During run time, Inline::Java makes sure these are in the CLASSPATH.)
 
@@ -586,23 +550,18 @@ The output comes to standard out, store it in a file.
 
 =item 2
 
-Use C<all_listeners>, giving is the name of the file from step one along with
-directories for the java and perl pieces.
+Use C<all_listeners>, giving it the name of the file from step one along with
+directory for the java pieces.
 
 =item 3
-
-Copy or move the perl pieces into the build or install Swing directory
-(unless you gave the proper directory in step 2).
-
-=item 4
 
 Compile the java programs.  Remember to include the Inline::Java classes
 in the CLASSPATH for compilation (they are supplied for you at run time).
 On my machine these are in /usr/src/Inline-Java-0.47/Java/classes.
 
-=item 5
+=item 4
 
-Make sure that the classes from step 4 are in the CLASSPATH for all
+Make sure that the classes from step 3 are in the CLASSPATH for all
 scripts that need them.
 
 =back
@@ -613,7 +572,7 @@ Since C<Java::Swing> is based on C<Inline::Java> it is inherently a remote
 procedure call system.  Among other things this means that only methods
 can be called from one language to another.  Constants cannot be seen.
 Therefore, if you have constants in an interface, or even in a class,
-you must provide subs for these, typically in both java and perl.
+you must provide methods for these, typically in both java and perl.
 
 To see how to do this, consult C<PerlSwingConstants.java> in the java
 directory of the distribution and its pair C<SwingConstants.pm> in
@@ -628,11 +587,11 @@ None.
 =head1 SEE ALSO
 
 The documentation above is, of course, incomplete.  It gives you the
-spirit of using the kit.  The real documentation is the Java official
-documentation for the version of the jdk you have installed.
+spirit of using the kit.  The real documentation is the official
+Java documentation for the version of the jdk you have installed.
 
 Particular Java::Swing:: modules may have additional Perl specific
-documentation (though none of mine do, since they were generated).
+documentation.  See the Swing directory for these modules.
 
 Questions about this module may be addressed to the author or posted to
 the Inline mailing list to which the author and other interested parties
