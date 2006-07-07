@@ -4,7 +4,7 @@ use strict; use warnings;
 use Carp;
 use Inline Java => 'DATA';
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 my %callbacks;
 my %listeners;
@@ -83,9 +83,18 @@ sub gen_generic_new {
 
         # if we were passed a hash reference, construct a default object, then
         # call set on each hash key with the value
-        if (ref($_[0]) =~ /HASH/) {  # call no arg constructor and accessors
+        if (ref($_[0]) =~ /HASH/) {
             my $attributes = shift;
-            my $retval     = $inline_class->new();
+            my $retval;
+
+            if ( defined $attributes->{ Object } ) {
+                my $init_object = delete $attributes->{ Object };
+                $retval = $inline_class->new( $init_object );
+            }
+            else {
+                $retval = $inline_class->new();
+            }
+
             foreach my $attribute (keys %$attributes) {
                 my $setter = "set" . ucfirst($attribute);
                 eval { $retval->$setter($attributes->{$attribute}); };
@@ -338,6 +347,19 @@ whose keys are attributes of the class with the proper values.  Your object
 will be constructed by calling the empty argument constructor.  Then the
 attribute values will be supplied by calling set accessors.  So columns => 10
 will translate into setColumns(10).
+
+As of version 0.12, you may add an Object attribute to the constructor
+hash.  Then Java::Swing will call the constructor on the underlying class
+which expects it, and then call set accessors for any additional attributes.
+For example:
+
+        my $label = JLabel->new(
+            { Object => icon,
+              text   => 'caption', }
+        );
+Thanks to Andreas Pürzer for suggesting this additional sugar.
+
+Continuing with the example:
 
     $south_panel->add(JLabel->new("Answer:"), "West"  );
     $south_panel->add($answer,                "Center");

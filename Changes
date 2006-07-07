@@ -1,5 +1,11 @@
 Revision history for Perl extension Java::Swing.
 
+0.12   Fri Jul  7 18:28:53 CDT 2006
+        - Applied Andreas Pürzer's patch which allows you to use the
+          Java::Swing constructor sugar, even if you need to call a
+          constructor with an initializing object (e.g. putting an icon
+          in a JLabel).
+
 0.11  Tue Sep 27 17:50:06 CDT 2005
         - Cleaned documentation, especially as it relates to adding new
           listeners to Java::Swing.
