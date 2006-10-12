@@ -4,7 +4,7 @@ use strict; use warnings;
 use Carp;
 use Inline Java => 'DATA';
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 my %callbacks;
 my %listeners;
@@ -354,10 +354,10 @@ which expects it, and then call set accessors for any additional attributes.
 For example:
 
         my $label = JLabel->new(
-            { Object => icon,
+            { Object => $icon,
               text   => 'caption', }
         );
-Thanks to Andreas Pürzer for suggesting this additional sugar.
+Thanks to Andreas Puerzer for suggesting this additional sugar.
 
 Continuing with the example:
 

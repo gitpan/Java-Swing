@@ -1,7 +1,13 @@
 Revision history for Perl extension Java::Swing.
 
+0.13 Thu Oct 12 18:13:38 CDT 2006
+        - Added the rest of the awt layouts to the list of non-Swing
+          packages in Java::Swing::PerlFakePackages and marked
+          the correct package of many more.  There may still be others
+          I missed.  Thanks to Agent Zhang for pointing this out.
+
 0.12   Fri Jul  7 18:28:53 CDT 2006
-        - Applied Andreas Pürzer's patch which allows you to use the
+        - Applied Andreas Puerzer's patch which allows you to use the
           Java::Swing constructor sugar, even if you need to call a
           constructor with an initializing object (e.g. putting an icon
           in a JLabel).
