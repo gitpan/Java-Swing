@@ -2,17 +2,17 @@ Changes
 MANIFEST
 Makefile.PL
 README
-Swing.pm
-Swing/GridBagConstraints.pm
-Swing/SwingConstants.pm
-Swing/Timer.pm
-Swing/PerlRealPackages.pm
-Swing/PerlFakePackages.pm
-Swing/PerlRealLocalPackages.pm
-Swing/PerlFakeLocalPackages.pm
-Swing/Generate/Listener.pm
-Swing/Generate/all_listeners
-Swing/Generate/decomp_listeners
+lib/Java/Swing.pm
+lib/Java/Swing/GridBagConstraints.pm
+lib/Java/Swing/SwingConstants.pm
+lib/Java/Swing/Timer.pm
+lib/Java/Swing/PerlRealPackages.pm
+lib/Java/Swing/PerlFakePackages.pm
+lib/Java/Swing/PerlRealLocalPackages.pm
+lib/Java/Swing/PerlFakeLocalPackages.pm
+lib/Java/Swing/Generate/Listener.pm
+lib/Java/Swing/Generate/all_listeners
+lib/Java/Swing/Generate/decomp_listeners
 TODO
 doc/generation.doc
 example/calc
@@ -113,4 +113,5 @@ t/04mouse.t
 t/05gridbag.t
 t/06timer.t
 t/07layout.t
+t/08tree.t
 META.yml                                 Module meta-data (added by MakeMaker)

@@ -4,7 +4,7 @@ use strict; use warnings;
 use Carp;
 use Inline Java => 'DATA';
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 my %callbacks;
 my %listeners;
@@ -55,9 +55,11 @@ sub gen_fake_module_autoload {
     my $package_name = shift || 'javax.swing';
 
     return sub {
-        my $invocant = $_[0];
-        my $command  = our $AUTOLOAD;
-        my $studied  = "$package_name.$invocant";
+        my $invocant      = $_[0];
+        my $java_invocant = $invocant;
+        $java_invocant    =~ s/::/./g;
+        my $command       = our $AUTOLOAD;
+        my $studied       = "$package_name.$java_invocant";
 
         Inline->bind(
             Java       => 'STUDY',

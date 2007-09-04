@@ -1,5 +1,11 @@
 Revision history for Perl extension Java::Swing.
 
+0.14 Tue Sep  4 18:36:27 CDT 2007
+        - finally moved modules into a lib directory
+        - fixed bug which prevented tree::DefaultMutableTreeNode and other
+          similar classes from working.  Thanks to Gabe Schnaubelt
+          for pointing out this bug.
+
 0.13 Thu Oct 12 18:13:38 CDT 2006
         - Added the rest of the awt layouts to the list of non-Swing
           packages in Java::Swing::PerlFakePackages and marked
